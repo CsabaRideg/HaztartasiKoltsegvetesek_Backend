@@ -1,10 +1,67 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Kezdőlap";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="text-center mb-4">
+    <h1 class="display-5">Háztartási költségvetés</h1>
+    <p class="text-muted">Havi összesítés – @Model.AktualisHonap</p>
+</div>
+
+<div class="row g-3">
+    <div class="col-md-4">
+        <div class="card h-100 border-success">
+            <div class="card-body">
+                <h2 class="h5 card-title text-success">Bevétel</h2>
+                <p class="card-text fs-4">@Model.Bevetel.ToString("N2") Ft</p>
+            </div>
+        </div>
+
+        <section class="mt-5">
+            <h2 class="h4">Havi összesítés kategóriánként</h2>
+            @if (Model.KategoriaOsszesites.Count == 0)
+            {
+                <p class="text-muted">Ebben a hónapban még nincs rögzített tranzakció.</p>
+            }
+            else
+            {
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Kategória</th>
+                            <th>Típus</th>
+                            <th class="text-end">Összeg</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var sor in Model.KategoriaOsszesites)
+                        {
+                            <tr>
+                                <td>@sor.KategoriaNev</td>
+                                <td>@(sor.Tipus ? "Bevétel" : "Kiadás")</td>
+                                <td class="text-end">@sor.Osszeg.ToString("N2") Ft</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        </section>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100 border-danger">
+            <div class="card-body">
+                <h2 class="h5 card-title text-danger">Kiadás</h2>
+                <p class="card-text fs-4">@Model.Kiadas.ToString("N2") Ft</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100 border-primary">
+            <div class="card-body">
+                <h2 class="h5 card-title text-primary">Egyenleg</h2>
+                <p class="card-text fs-4">@Model.Egyenleg.ToString("N2") Ft</p>
+            </div>
+        </div>
+    </div>
 </div>
